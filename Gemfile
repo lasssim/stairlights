@@ -12,6 +12,7 @@ gem 'msgpack'
 gem 'celluloid-websocket-client'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'netrc'
 
 group :development do
   gem 'rubysdl'

@@ -1,6 +1,8 @@
 module Canvas
 
   class Base
+    include Enumerable
+
     attr_reader :default_pixel, :pixels
     
     def initialize(opts:{})
@@ -16,6 +18,12 @@ module Canvas
 
     def set_pixel(x, y, pixel)
       self.pixels = { [x, y] => pixel }
+    end
+
+    def each(&block)
+      pixels.each do |pixel|
+        block.call(pixel)
+      end
     end
 
     # TODO: extract serialize and deserialize to separate classes

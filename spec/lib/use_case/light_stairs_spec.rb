@@ -14,8 +14,6 @@ module UseCase
 
     it "lights the stairs", :wip do
       subject.run
-
-      sleep(300)
     end
 
   end
