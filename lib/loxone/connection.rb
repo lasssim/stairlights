@@ -46,16 +46,16 @@ module Loxone
     private
 
     def websocket_client
-      url = "ws://#{Loxone.config.host}/ws/rfc6455"
+      url = websocket_url
       @websocket_client ||= Celluloid::WebSocket::Client.new url, Celluloid::Actor.current
     end
 
     def http_client
-      @http_client ||= Faraday.new(:url => "http://#{Loxone.config.host}") do |faraday|
+      @http_client ||= Faraday.new(url: api_url) do |faraday|
         faraday.request  :url_encoded
         faraday.response :logger
         faraday.response :json, content_type: /\bjson$/
-        faraday.basic_auth(Loxone.config.user, Loxone.config.password)
+        faraday.basic_auth(username, password)
         faraday.adapter  Faraday.default_adapter
       end
     end
@@ -63,7 +63,7 @@ module Loxone
 
     def hmac
       @hmac ||= begin
-        data = "#{Loxone.config.user}:#{Loxone.config.password}" 
+        data = "#{username}:#{password}" 
 
         digest = OpenSSL::Digest.new('sha1')
         hmac = OpenSSL::HMAC.digest(digest, key, data).unpack("H*").first
@@ -77,6 +77,29 @@ module Loxone
     end
 
 
+    def netrc
+      @netrc ||= Netrc.read["loxone"]
+    end
+
+    def username
+      @username ||= netrc[0]
+    end
+
+    def password
+      @password ||= netrc[1]
+    end
+
+    def api_url
+      "http://#{hostname}"
+    end
+
+    def websocket_url
+      "ws://#{hostname}/ws/rfc6455"
+    end
+
+    def hostname
+      Loxone.config.hostname
+    end
 
 
   end

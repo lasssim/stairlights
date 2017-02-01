@@ -41,6 +41,7 @@ GEM
     method_source (0.8.2)
     msgpack (1.0.2)
     multipart-post (2.0.0)
+    netrc (0.11.0)
     nio4r (2.0.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -89,6 +90,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   msgpack
+  netrc
   pry
   rspec
   rspec-its

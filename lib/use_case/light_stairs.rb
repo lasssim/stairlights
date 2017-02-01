@@ -3,29 +3,44 @@ module UseCase
 
     attr_reader :control_uuid
     def initialize
-      @control_uuid = "0e745744-02ca-4d7e-fffffc9dca063474" # Pudl Licht
+      @control_uuid = "0d2956bb-02a8-1e74-ffffda868d47d75b" # PM Vorhaus EG
     end
     
 
     def run
+      first_event = true
+
+      effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
+      effect_future = nil
+
+      color = Canvas::Pixel.new([0, 0, 0])
+      effect_off = Effect::SingleColor.new(printer: printer, opts: { pixel: color })
+ 
+      value = nil
+
       event_filter.register_filter(uuid: control_uuid) do |event|
-        
-        color = if event.state.value != 0
-          [rand(255), rand(255), rand(255)]
-        else
-          [0, 0, 0]  
+
+        value = event.state.value
+        puts event.inspect
+
+        effect_future ||= begin 
+          p_r = Proc.new { [value != 0, nil] }
+          effect.future.loop(p_r)
+        end
+
+        puts effect_future.ready?
+        if value == 0
+          effect_future.value
+          p_s = Proc.new { [value == 0, nil] }
+          effect_off.async.loop(p_s)
+          effect_future = nil
         end
         
-        new_pixel = Canvas::Pixel.new(color)
-        canvas.pixels = Hash[canvas.pixels.map do |(x, y), pixel|
-          [[x, y], new_pixel]
-        end]
-       
-      
-        printer.show
-
       end
+      
       loxone_connection
+
+      while true; sleep; end
     end
 
     private

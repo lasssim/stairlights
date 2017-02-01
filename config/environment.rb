@@ -15,5 +15,6 @@ require 'loxone'
 require 'use_case'
 require 'canvas'
 require 'printer'
+require 'effect'
 
 require ::File.expand_path("../environments/#{env}",  __FILE__)

@@ -12,12 +12,5 @@ module Canvas
       to_a == other.to_a
     end
 
-    def self.rand
-      new([
-        rand(255),
-        rand(255),
-        rand(255)]
-      )
-    end
   end
 end
