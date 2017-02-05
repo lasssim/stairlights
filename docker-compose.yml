@@ -1,0 +1,11 @@
+version: "2"
+services:
+  test:
+    build: .
+    environment:
+      - APP_ENV=test
+  production:
+    build: .
+    environment:
+      - APP_ENV=production
+      

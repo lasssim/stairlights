@@ -1,0 +1,4 @@
+- name: stairlight_steps
+  tag: master
+  service: test
+  command: bundle exec rspec spec/nothing_spec.rb

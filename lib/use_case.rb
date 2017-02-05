@@ -4,8 +4,8 @@ require_relative 'use_case/find_uuid'
 module UseCase
   module_function
 
-  def configure(&block)
-    @config = Confstruct::Configuration.new(&block)
+  def configure(hash={}, &block)
+    @config = Confstruct::Configuration.new(hash, &block)
   end
 
   def config

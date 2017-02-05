@@ -1,16 +1,18 @@
 module UseCase
-  class LighStairs
+  class LightStairs
 
-    attr_reader :control_uuid
-    def initialize
+    attr_reader :control_uuid, :logger
+    def initialize(logger: config.logger)
       @control_uuid = "0d2956bb-02a8-1e74-ffffda868d47d75b" # PM Vorhaus EG
+      @logger = logger
     end
     
 
     def run
       first_event = true
 
-      effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
+      #effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
+      effect = Effect::ProgressBar.new(printer: printer)
       effect_future = nil
 
       color = Canvas::Pixel.new([0, 0, 0])
@@ -21,17 +23,22 @@ module UseCase
       event_filter.register_filter(uuid: control_uuid) do |event|
 
         value = event.state.value
-        puts event.inspect
+        
+        opts = { 
+          value: value
+        }
+       
+        logger.debug event.inspect
 
+        raise "This memoization doesn't allow the value to be updated in the loop."
         effect_future ||= begin 
-          p_r = Proc.new { [value != 0, nil] }
+          p_r = Proc.new { [value != 0, opts] }
           effect.future.loop(p_r)
         end
 
-        puts effect_future.ready?
         if value == 0
           effect_future.value
-          p_s = Proc.new { [value == 0, nil] }
+          p_s = Proc.new { [value == 0, opts] }
           effect_off.async.loop(p_s)
           effect_future = nil
         end
@@ -54,18 +61,21 @@ module UseCase
     end
 
     def canvas
-      @canvas ||= Canvas::Rectangle.new(
-        opts: {
-          width: 2,
-          height: 200
-        }
+      @canvas ||= config.canvas_class.new(
+        opts: config.canvas_opts || {}
       )
     end
 
     def printer
-      Printer::SDL.new(canvas: canvas, logger: Logger.new(nil), opts: {})
+      @printer ||= config.printer_class.new(
+        canvas: canvas,
+        logger: UseCase.config.logger,
+        opts: config.printer_opts || {}
+      )
     end
 
-
+    def config
+      UseCase.config 
+    end
   end
 end

@@ -31,7 +31,7 @@ module Loxone
         end
 
       rescue Exception => ex
-        binding.pry
+#        binding.pry
       end
 
     end

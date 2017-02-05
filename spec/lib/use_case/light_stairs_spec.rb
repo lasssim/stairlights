@@ -1,6 +1,6 @@
 module UseCase
 
-  describe LighStairs do
+  describe LightStairs do
     around do |ex|
       Celluloid.boot
       ex.run

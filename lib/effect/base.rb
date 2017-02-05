@@ -4,7 +4,7 @@ module Effect
 
     attr_reader :printer, :canvas
     
-    def initialize(printer:, opts:)
+    def initialize(printer:, opts:{})
       @printer = printer
       @canvas  = printer.canvas
       @fps     = opts.fetch(:fps) { 60 }

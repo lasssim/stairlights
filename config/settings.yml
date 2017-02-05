@@ -1,2 +1,24 @@
 test:
-  hostname: 192.168.11.10 
+  loxone: 
+    hostname: 192.168.11.10
+
+  canvas_class: Rectangle
+  canvas_opts: 
+    width: 2
+    height: 200
+
+  printer_class: TCP
+  printer_opts:
+
+production:
+  loxone:
+    hostname: 192.168.11.10 
+
+  canvas_class: Rectangle
+  canvas_opts:
+    width: 2
+    height: 200
+
+  printer_class: TCP
+  printer_opts:
+    hostname: 192.168.11.108 
