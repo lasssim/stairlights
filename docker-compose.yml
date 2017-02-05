@@ -1,7 +1,10 @@
 version: "2"
 services:
   test:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.codeship
+    cached: true
     environment:
       - APP_ENV=test
   production:
