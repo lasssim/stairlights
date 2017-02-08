@@ -3,7 +3,7 @@ module Effect
     
     attr_reader :max_value
 
-    def initialize(printer:, opts:{})
+    def initialize(printer:, logger:, opts:{})
       super
       @max_value = 0
     end

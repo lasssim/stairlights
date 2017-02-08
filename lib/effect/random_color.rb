@@ -4,7 +4,7 @@ module Effect
     attr_reader :time_till_change
     attr_accessor :time_since_last_color_change
     
-    def initialize(printer:, opts:)
+    def initialize(printer:, logger:, opts:)
       super
       @time_till_change = opts.fetch(:time_till_change)
       reset_time_since_last_color_change

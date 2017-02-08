@@ -5,12 +5,12 @@ module Effect
     attr_reader :printer, :canvas, :running, :logger, :fps
     attr_accessor :value
 
-    def initialize(printer:, opts:{})
+    def initialize(printer:, logger:, opts:{})
       @printer = printer
       @canvas  = printer.canvas
       @fps     = opts.fetch(:fps) { 25 }
       @running = false
-      @logger  = ::Logger.new(STDOUT)
+      @logger  = logger
       @value   = opts.fetch(:value) { nil }
     end
 

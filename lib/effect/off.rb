@@ -3,7 +3,7 @@ module Effect
     
     attr_reader :color
     
-    def initialize(printer:, opts:{})
+    def initialize(printer:, logger:, opts:{})
       super
       @color = Canvas::Pixel.new([0, 0, 0])
     end

@@ -5,6 +5,7 @@ config_from_yml = YAML.load_file(path_to_config)[environment]
 
 logger ||= Logger.new(STDOUT)
 STDOUT.sync = true
+logger.level = Logger::INFO
 
 
 logger.info "Starting Stairlights"
@@ -21,4 +22,3 @@ UseCase.configure(config_from_yml) do
 end 
 
 logger.info "Configuration done. Environment: #{environment}"
-
