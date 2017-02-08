@@ -7,7 +7,7 @@ module Effect
     def initialize(printer:, opts:{})
       @printer = printer
       @canvas  = printer.canvas
-      @fps     = opts.fetch(:fps) { 35 }
+      @fps     = opts.fetch(:fps) { 25 }
       @running = false
       @logger  = ::Logger.new(STDOUT)
     end
