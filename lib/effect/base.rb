@@ -3,6 +3,7 @@ module Effect
     include Celluloid
 
     attr_reader :printer, :canvas, :running, :logger, :fps
+    attr_accessor :value
 
     def initialize(printer:, opts:{})
       @printer = printer
@@ -10,6 +11,7 @@ module Effect
       @fps     = opts.fetch(:fps) { 25 }
       @running = false
       @logger  = ::Logger.new(STDOUT)
+      @value   = opts.fetch(:value) { nil }
     end
 
     def start

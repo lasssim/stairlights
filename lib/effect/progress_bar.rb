@@ -8,10 +8,9 @@ module Effect
       @max_value = 0
     end
 
-    def render_frame(opts)
+    def render_frame(time_elapsed:)
       bright = Canvas::Pixel.new([255, 214, 170])
       dark   = Canvas::Pixel.new([100, 100, 100])
-      value  = opts.fetch(:value)
 
       progress = progress(value)
 
@@ -24,6 +23,7 @@ module Effect
 
         canvas.set_pixel(x, y, color)
       end
+      true
     end
 
     private
