@@ -8,14 +8,10 @@ module Loxone
 
     def inspect(compact=true)
       if compact
-        [
-          "+-- Event --------------",
-          "| #{state.uuid}: #{state.value}",
-          "+-----------------------"
-        ].join("\n")
+          "Loxone Event: #{state.uuid}: #{state.value}"
       else
         [control, state].map(&:inspect).join("\n")
-      end + "\n\n"
+      end
     end
   end
 end

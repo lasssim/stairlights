@@ -18,6 +18,7 @@ module Printer
 
 
     def show
+      logger.debug "#{self.class}  sent: #{canvas.to_a.to_set.hash}"
       canvas.pixels.each do |(x, y), pixel|
         color = screen.mapRGB(*pixel.to_a)
         x_rect = (pixel_height + columns_space) * x

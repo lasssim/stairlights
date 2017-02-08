@@ -71,6 +71,7 @@ module Loxone
     end
 
     def key
+      puts "key"
       @key ||= begin
         [http_client.get("/jdev/sys/getkey").body["LL"]["value"]].pack("H*")
       end

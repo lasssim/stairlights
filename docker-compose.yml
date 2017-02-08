@@ -4,11 +4,11 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.codeship
-    cached: true
     environment:
       - APP_ENV=test
   production:
     build: .
     environment:
       - APP_ENV=production
-      
+    volumes:
+      - /home/simon/.netrc:/root/.netrc

@@ -1,7 +1,13 @@
-path_to_config = File.expand_path("../../settings.yml", __FILE__)
-config_from_yml = YAML.load_file(path_to_config)[ENV['APP_ENV'] || "development"]
+environment = ENV['APP_ENV'] || "development"
 
-logger = Logger.new(STDOUT)
+path_to_config = File.expand_path("../../settings.yml", __FILE__)
+config_from_yml = YAML.load_file(path_to_config)[environment]
+
+logger ||= Logger.new(STDOUT)
+STDOUT.sync = true
+
+
+logger.info "Starting Stairlights"
 
 Loxone.configure(config_from_yml["loxone"]) do
   logger logger
@@ -14,4 +20,5 @@ UseCase.configure(config_from_yml) do
   printer_class Printer.const_get(config_from_yml["printer_class"])
 end 
 
+logger.info "Configuration done. Environment: #{environment}"
 

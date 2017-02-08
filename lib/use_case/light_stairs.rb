@@ -5,42 +5,42 @@ module UseCase
     def initialize(logger: config.logger)
       @control_uuid = "0d2956bb-02a8-1e74-ffffda868d47d75b" # PM Vorhaus EG
       @logger = logger
+
+      logger.debug "Initialized LightStairs usecase"
     end
     
 
     def run
+      logger.debug "LightStairs started"
       first_event = true
 
-      #effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
-      effect = Effect::ProgressBar.new(printer: printer)
-      effect_future = nil
+      effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
+      #effect = Effect::ProgressBar.new(printer: printer)
 
-      color = Canvas::Pixel.new([0, 0, 0])
-      effect_off = Effect::SingleColor.new(printer: printer, opts: { pixel: color })
+      effect_off = Effect::Off.new(printer: printer)
  
-      value = nil
-
+      logger.debug "Register Filter"
+      
       event_filter.register_filter(uuid: control_uuid) do |event|
 
-        value = event.state.value
         
-        opts = { 
-          value: value
-        }
-       
         logger.debug event.inspect
 
-        raise "This memoization doesn't allow the value to be updated in the loop."
-        effect_future ||= begin 
-          p_r = Proc.new { [value != 0, opts] }
-          effect.future.loop(p_r)
-        end
+        begin
+          #effect.value = event.state.value
 
-        if value == 0
-          effect_future.value
-          p_s = Proc.new { [value == 0, opts] }
-          effect_off.async.loop(p_s)
-          effect_future = nil
+          value = event.state.value
+
+          if value == 0
+            effect.stop
+            effect_off.start
+          else
+            effect_off.stop
+            effect.start
+          end
+        rescue Exception => ex
+          ap ex
+          ap ex.backtrace
         end
         
       end

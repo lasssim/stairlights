@@ -1,4 +1,4 @@
-
+require 'set'
 module Printer
 
   class TCP < Base
@@ -12,6 +12,7 @@ module Printer
 
 
     def show
+      logger.debug "#{self.class}  sent: #{canvas.to_a.to_set.hash}"
       socket.puts canvas.serialize
     end
 

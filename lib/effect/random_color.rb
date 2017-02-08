@@ -10,10 +10,10 @@ module Effect
       reset_time_since_last_color_change
     end
 
-    def render_frame(opts)
-      inc_time_since_last_color_change_by(opts.fetch(:time_elapsed))
+    def render_frame(time_elapsed:)
+      inc_time_since_last_color_change_by(time_elapsed)
       
-      return unless render_new_frame?
+      return true unless render_new_frame?
 
       color = Canvas::Pixel.new([rand(255), rand(255), rand(255)])
       canvas.each do |(x, y), pixel|
@@ -21,6 +21,7 @@ module Effect
       end
       
       reset_time_since_last_color_change
+      true
     end
 
     private
