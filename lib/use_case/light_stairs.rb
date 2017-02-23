@@ -15,8 +15,8 @@ module UseCase
       first_event = true
 
       #effect = Effect::RandomColor.new(printer: printer, opts: { time_till_change: 1 })
-      #effect = Effect::ProgressBar.new(printer: printer, logger: logger)
-      effect = Effect::Fire.new(printer: printer, logger: logger)
+      effect = Effect::ProgressBar.new(printer: printer, logger: logger)
+      #effect = Effect::Fire.new(printer: printer, logger: logger)
 
       effect_off = Effect::Off.new(printer: printer, logger: logger)
  
